@@ -42,6 +42,7 @@
     Write-Host("Base64-UTF8:     " + (base64-UTF8 $inputString))
     Write-Host("Base64-UTF7:     " + (base64-UTF7 $inputString))
     Write-Host("Base64-Unicode:  " + (base64-Unicode $inputString))
+    Write-Host("Char Reversed:   " + (Alphabet-Reversed $inputString))
 }
 
 
@@ -550,6 +551,35 @@ function base64-Unicode ($base64String){
     catch{
         return "Not Base64-Unicode"
     }
+}
+
+
+function Alphabet-Reversed ($inp){
+
+    $charlistUpper = @("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+    $charlistUpperReverse = @('Z', "Y", "X", "W", "V", "U", "T", "S", "R", "Q", "P", "O", "N", "M", "L", "K", "J", "I", "H", "G", "F", "E", "D", "C", "B", "A")
+    $charlistLower = @("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+    $charlistLowerReverse = @('z', "y", "x", "w", "v", "u", "t", "s", "r", "q", "p", "o", "n", "m", "l", "k", "j", "i", "h", "g", "f", "e", "d", "c", "b", "a")
+    
+    $output = ""
+
+    $inp.ToCharArray() | ForEach-Object{
+        # check if it is upper case 
+        if(([int]$_ -ge 65) -and ([int]$_ -le 90)){
+            $pos = $charlistUpper.IndexOf($_.ToString())
+            $output += $charlistUpperReverse.GetValue($pos)
+        }elseif([int]$_ -ge 97 -and [int]$_ -le 122){ #check if lowercase
+            $pos = $charlistLower.IndexOf($_.ToString())
+            $output += $charlistLowerReverse.GetValue($pos)
+
+        }else{
+            $output += $_
+
+        }
+    
+    }
+    return $output
+
 }
 
 
